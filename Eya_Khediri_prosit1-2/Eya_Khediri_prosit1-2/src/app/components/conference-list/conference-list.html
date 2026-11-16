@@ -1,0 +1,44 @@
+<section class="card list-card" id="conference-list">
+  <div class="section-title">
+    <div class="icon">📅</div>
+    <div>
+      <h2>Liste des conférences à venir</h2>
+      <p>Cliquez sur une conférence pour afficher ses détails.</p>
+    </div>
+  </div>
+
+  <!-- Two-way binding : recherche par titre -->
+  <input class="search" type="text" placeholder="Taper le titre de la conférence"
+         [(ngModel)]="recherche" />
+
+  <div class="conference-grid">
+    @for (conference of conferencesFiltrees; track conference.id) {
+      <article class="conference-item" (click)="choisirConference(conference)">
+        <!-- Pipe uppercase -->
+        <h3>{{ conference.title | uppercase }}</h3>
+        <!-- Pipe date -->
+        <p><strong>Date :</strong> {{ conference.date | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Lieu :</strong> {{ conference.place }}</p>
+        <p><strong>Places restantes :</strong> {{ placesRestantes(conference) }}</p>
+
+        <!-- Directive ngClass ; $event.stopPropagation() évite de sélectionner la carte -->
+        <button
+          type="button"
+          class="inscription-btn"
+          [ngClass]="couleurBouton(conference)"
+          [disabled]="placesRestantes(conference) === 0"
+          (click)="reserve(conference); $event.stopPropagation()">
+          S'inscrire
+        </button>
+      </article>
+    } @empty {
+      <p class="empty-message">Aucune conférence enregistrée.</p>
+    }
+  </div>
+</section>
+
+<!-- PROSIT 2 : composant imbriqué ; @Input (parent -> enfant), @Output (enfant -> parent) -->
+<app-conference-details
+  [conference]="conferenceSelectionnee"
+  (inscrit)="reserve($event)">
+</app-conference-details>

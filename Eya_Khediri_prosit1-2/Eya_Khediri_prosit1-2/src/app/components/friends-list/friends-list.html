@@ -1,0 +1,20 @@
+<section class="card" id="amis">
+  <div class="icon">👥</div>
+  <div>
+    <h2>Liste des amis</h2>
+
+    <!-- Property binding : classe -> vue -->
+    <input [value]="nom" />
+    <!-- Event binding : vue -> classe -->
+    <input [value]="nom" (input)="changerNom($event)" />
+    <!-- Two-way data binding -->
+    <input [(ngModel)]="nom" />
+
+    <!-- Contrôle de flux natif -->
+    <ul>
+      @for (ami of amis; track ami) {
+        <li>{{ ami }}</li>
+      }
+    </ul>
+  </div>
+</section>
